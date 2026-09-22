@@ -2,42 +2,67 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    background: #1E1E1E;
+    background-color: #0F3478;
+    color: #FFFFFF;
     min-height: 100vh;
+}
+
+/* === LOGIN & REGISTER PAGES === */
+.login-page,
+.register-page {
     display: flex;
     align-items: center;
     justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0F3478 0%, #1A3560 100%);
 }
 
 .container {
     display: flex;
-    gap: 40px;
+    gap: 50px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+}
+
+.brand {
+    text-align: center;
 }
 
 .brand h1 {
-    color: white;
-    font-size: 36px;
-    margin-bottom: 10px;
+    font-size: 42px;
+    color: #FFFFFF;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .brand p {
-    color: #ccc;
+    color: #B8C8E8;
+    font-size: 16px;
 }
 
-.login-card {
-    background: #D3D3D3;
+.login-card,
+.register-card {
+    background-color: #1A3560;
     padding: 35px;
-    border-radius: 10px;
-    width: 380px;
+    border-radius: 14px;
+    width: 400px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.login-card h2 {
+.login-card h2,
+.register-card h2 {
+    text-align: center;
     margin-bottom: 25px;
-    color: #1A1A2E;
+    color: #FFFFFF;
+    font-size: 22px;
 }
 
 .form-group {
@@ -47,39 +72,63 @@ body {
 .form-group label {
     display: block;
     margin-bottom: 6px;
+    color: #B8C8E8;
     font-size: 14px;
-    color: #333;
 }
 
-.form-group input {
+.form-group input,
+.form-group select,
+.form-group textarea {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #B0B0B0;
-    border-radius: 4px;
+    padding: 12px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.15);
+    color: #FFFFFF;
+    font-size: 15px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #4A78D0;
+    box-shadow: 0 0 0 3px rgba(74, 120, 208, 0.2);
 }
 
 .btn {
     width: 100%;
-    padding: 12px;
+    padding: 13px;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
     cursor: pointer;
-    font-size: 15px;
     text-decoration: none;
     display: inline-block;
     text-align: center;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn:active {
+    transform: scale(0.98);
 }
 
 .primary-btn {
-    background: #1E3A8A;
-    color: white;
-    font-weight: 600;
+    background-color: #FFFFFF;
+    color: #0F3478;
+}
+
+.primary-btn:hover {
+    background-color: #E0E8F8;
 }
 
 .divider {
     text-align: center;
-    margin: 20px 0;
-    color: #666;
+    margin: 22px 0;
+    color: #6A88C8;
+    font-size: 14px;
 }
 
 .btn-group {
@@ -88,58 +137,95 @@ body {
 }
 
 .secondary-btn {
-    background: #E0E0E0;
-    color: #333;
-    font-size: 13px;
-    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #FFFFFF;
+    font-size: 14px;
+    padding: 11px;
 }
+
+.secondary-btn:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.switch-link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #B8C8E8;
+}
+
+.switch-link a {
+    color: #FFFFFF;
+    text-decoration: underline;
+}
+
+.switch-link a:hover {
+    color: #E0E8F8;
+}
+
+/* === DASHBOARD === */
 .dashboard-body {
-    background: #1E1E1E;
-    min-height: 100vh;
+    background-color: #0F3478;
 }
 
 .navbar {
-    background: #2A2A2A;
-    padding: 15px 40px;
+    background-color: #0A2460;
+    padding: 16px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .navbar h2 {
-    color: white;
+    color: #FFFFFF;
     font-size: 20px;
+    letter-spacing: 1px;
 }
 
 .nav-links {
     display: flex;
-    gap: 20px;
+    gap: 24px;
     align-items: center;
 }
 
 .nav-links span {
-    color: #ccc;
+    color: #B8C8E8;
+    font-size: 15px;
 }
 
 .logout-btn {
-    background: #D32F2F;
-    color: white;
-    padding: 8px 16px;
-    border-radius: 4px;
+    background-color: #D81E2F;
+    color: #FFFFFF;
+    padding: 9px 18px;
+    border-radius: 8px;
     text-decoration: none;
     font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.logout-btn:hover {
+    background-color: #B81A28;
 }
 
 .dashboard-container {
     max-width: 900px;
-    margin: 50px auto;
+    margin: 60px auto;
     text-align: center;
     padding: 0 20px;
 }
 
 .dashboard-container h1 {
-    color: white;
-    margin-bottom: 40px;
+    color: #FFFFFF;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.dashboard-container > p {
+    color: #B8C8E8;
+    margin-bottom: 50px;
 }
 
 .action-cards {
@@ -150,34 +236,67 @@ body {
 
 .action-card {
     padding: 40px 25px;
-    border-radius: 10px;
+    border-radius: 14px;
     text-decoration: none;
-    color: white;
-    transition: transform 0.2s;
+    color: #FFFFFF;
+    transition: transform 0.2s ease, filter 0.2s ease;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
 }
 
 .action-card:hover {
     transform: translateY(-5px);
+    filter: brightness(1.1);
 }
 
 .lost-card {
-    background: #B91B1B;
+    background-color: #D81E2F;
+}
+
+.lost-card:hover {
+    background-color: #B81A28;
 }
 
 .found-card {
-    background: #1E6A2E;
+    background-color: #FFFFFF;
+    color: #0F3478;
+}
+
+.found-card:hover {
+    background-color: #E8F0FF;
 }
 
 .view-card {
-    background: #1E3A8A;
+    background-color: #4A78D0;
+}
+
+.view-card:hover {
+    background-color: #3A68C0;
 }
 
 .action-card h3 {
     font-size: 20px;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .action-card p {
     font-size: 14px;
     opacity: 0.9;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .action-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .navbar {
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 12px;
+    }
 }

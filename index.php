@@ -5,7 +5,7 @@
     <title>ACLC Lost & Found</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="login-page">
     <div class="container">
         <div class="brand">
             <h1>LOST AND FOUND</h1>
@@ -19,15 +19,19 @@
                     <label>Student ID / Instructor ID</label>
                     <input type="text" name="user_id" required>
                 </div>
+
                 <div class="form-group">
                     <label>Password</label>
                     <input type="password" name="password" required>
                 </div>
+
                 <button type="submit" class="btn primary-btn">Log In</button>
+
                 <div class="divider">or</div>
+
                 <div class="btn-group">
-                    <a href="register-student.php" class="btn secondary-btn">Register as student</a>
-                    <a href="register-instructor.php" class="btn secondary-btn">Register as instructor</a>
+                    <a href="register-student.php" class="btn secondary-btn">Register as Student</a>
+                    <a href="register-instructor.php" class="btn secondary-btn">Register as Instructor</a>
                 </div>
             </form>
         </div>
