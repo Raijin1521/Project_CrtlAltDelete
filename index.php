@@ -5,7 +5,24 @@
     <title>ACLC Lost & Found</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="login-page">
+<div style="position: absolute; top: 20px; left: 20px; z-index: 100;">
+    <a href="admin-login.php" style="
+        background: rgba(30, 58, 138, 0.9);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: background 0.2s;
+    " onmouseover="this.style.background='rgba(20, 40, 100, 0.95)'"
+       onmouseout="this.style.background='rgba(30, 58, 138, 0.9)'">
+        ⚙️ Admin Log In
+    </a>
+</div>   
     <div class="container">
         <div class="brand">
             <h1>LOST AND FOUND</h1>
