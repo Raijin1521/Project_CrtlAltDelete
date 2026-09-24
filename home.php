@@ -8,12 +8,12 @@ if (!isset($_SESSION['user_id'])) {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Dashboard - Lost & Found</title>
+    <title>Dashboard — ACLC Lost & Found</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="dashboard-body">
+<body>
     <nav class="navbar">
-        <h2>LOST AND FOUND</h2>
+        <h2>ACLC LOST AND FOUND</h2>
         <div class="nav-links">
             <span>Welcome, <?php echo $_SESSION['full_name']; ?></span>
             <a href="logout.php" class="logout-btn">Log Out</a>
