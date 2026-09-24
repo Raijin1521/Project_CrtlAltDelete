@@ -6,7 +6,6 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// Filters
 $type = $_GET['type'] ?? 'all';
 $search = $_GET['search'] ?? '';
 $item_name = $_GET['item_name'] ?? '';
