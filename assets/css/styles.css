@@ -1,0 +1,105 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: #f0f4f8;
+    color: #1e293b;
+    line-height: 1.6;
+}
+
+/* Navbar */
+.navbar {
+    background: #1e40af;
+    color: white;
+    padding: 1rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.nav-brand { font-size: 1.5rem; font-weight: 700; }
+.nav-links a {
+    color: white;
+    margin-left: 1.5rem;
+    text-decoration: none;
+    font-weight: 500;
+}
+.nav-links a:hover { text-decoration: underline; }
+.admin-link { color: #fcd34d; }
+
+/* Main container — fixed width for PC focus */
+.container {
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+/* Cards */
+.card {
+    background: white;
+    border-radius: 10px;
+    padding: 1.8rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+.card h2 { margin-bottom: 1rem; color: #1e40af; }
+
+/* Forms */
+form label {
+    display: block;
+    margin-top: 1rem;
+    font-weight: 600;
+}
+form input, form textarea, form select {
+    width: 100%;
+    padding: 0.75rem;
+    margin-top: 0.5rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+form button {
+    margin-top: 1.5rem;
+    padding: 0.85rem 2rem;
+    background: #1e40af;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+form button:hover { background: #1e3a8a; }
+
+/* Status badges */
+.badge {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+.badge-pending { background: #fef3c7; color: #92400e; }
+.badge-active { background: #dbeafe; color: #1e40af; }
+.badge-claimed { background: #d1fae5; color: #065f46; }
+.badge-disputed { background: #fee2e2; color: #991b1b; }
+
+/* Grid layout */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Notice: School ID rule */
+.id-note {
+    background: #eff6ff;
+    border-left: 4px solid #3b82f6;
+    padding: 0.8rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
