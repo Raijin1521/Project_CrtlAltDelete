@@ -1,7 +1,7 @@
 <?php
 include __DIR__ . '/../../includes/session_check.php';
 if ($_SESSION['role'] !== 'admin') {
-    header("Location: /Project_CtrlAltDelete/pages/index.php");
+    header("Location: /Project-CtrlAltDelete/pages/index.php");
     exit;
 }
 require_once __DIR__ . '/../../config/db_connect.php';
@@ -24,12 +24,12 @@ include __DIR__ . '/../../includes/header.php';
     <div class="card">
         <h3>Active Items</h3>
         <p style="font-size:2rem; font-weight:bold; color:#1e40af;"><?= $active_items ?></p>
-        <a href="/Project_CtrlAltDelete/pages/items_list.php" class="btn">View All →</a>
+        <a href="/Project-CtrlAltDelete/pages/items_list.php" class="btn">View All →</a>
     </div>
     <div class="card">
         <h3>Expiring Hold</h3>
         <p style="font-size:2rem; font-weight:bold; color:#dc2626;"><?= $hold_expiring ?></p>
-        <a href="/Project_CtrlAltDelete/pages/admin/archive.php" class="btn">Process →</a>
+        <a href="/Project-CtrlAltDelete/pages/admin/archive.php" class="btn">Process →</a>
     </div>
 </div>
 
@@ -51,7 +51,7 @@ include __DIR__ . '/../../includes/header.php';
             <td style="padding:0.75rem; border-bottom:1px solid #e2e8f0;"><?= e($claim['full_name']) ?></td>
             <td style="padding:0.75rem; border-bottom:1px solid #e2e8f0;"><?= e($claim['status']) ?></td>
             <td style="padding:0.75rem; border-bottom:1px solid #e2e8f0;">
-                <a href="/Project_CtrlAltDelete/pages/admin/verify_claim.php?claim_id=<?= $claim['claim_id'] ?>" class="btn">Review</a>
+                <a href="/Project-CtrlAltDelete/pages/admin/verify_claim.php?claim_id=<?= $claim['claim_id'] ?>" class="btn">Review</a>
             </td>
         </tr>
         <?php endforeach; ?>

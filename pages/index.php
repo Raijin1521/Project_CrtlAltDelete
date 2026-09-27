@@ -7,7 +7,7 @@ require_once __DIR__ . '/../config/db_connect.php';
 require_once __DIR__ . '/../includes/functions.php';
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: /Project_CtrlAltDelete/pages/auth/login.php");
+    header("Location: /Project-CtrlAltDelete/pages/auth/login.php");
     exit;
 }
 
@@ -33,9 +33,9 @@ include __DIR__ . '/../includes/header.php';
 <div class="grid" style="margin:2rem 0;">
     <div class="card">
         <h3>📋 Quick Actions</h3>
-        <a href="/Project_CtrlAltDelete/pages/lost_report.php" class="btn" style="display:block; margin:0.5rem 0;">Report Something Lost</a>
-        <a href="/Project_CtrlAltDelete/pages/found_report.php" class="btn" style="display:block; margin:0.5rem 0;">Post Something Found</a>
-        <a href="/Project_CtrlAltDelete/pages/items_list.php" class="btn" style="display:block; margin:0.5rem 0;">Browse All Items</a>
+        <a href="/Project-CtrlAltDelete/pages/lost_report.php" class="btn" style="display:block; margin:0.5rem 0;">Report Something Lost</a>
+        <a href="/Project-CtrlAltDelete/pages/found_report.php" class="btn" style="display:block; margin:0.5rem 0;">Post Something Found</a>
+        <a href="/Project-CtrlAltDelete/pages/items_list.php" class="btn" style="display:block; margin:0.5rem 0;">Browse All Items</a>
     </div>
 
     <div class="card">
@@ -55,7 +55,7 @@ include __DIR__ . '/../includes/header.php';
     <h4>Your Lost Items</h4>
     <ul>
         <?php foreach ($lost_items as $item): ?>
-        <li><a href="/Project_CtrlAltDelete/pages/item_detail.php?id=<?= $item['item_id'] ?>"><?= e($item['title']) ?></a> — <em><?= $item['status'] ?></em></li>
+        <li><a href="/Project-CtrlAltDelete/pages/item_detail.php?id=<?= $item['item_id'] ?>"><?= e($item['title']) ?></a> — <em><?= $item['status'] ?></em></li>
         <?php endforeach; ?>
     </ul>
     <?php endif; ?>

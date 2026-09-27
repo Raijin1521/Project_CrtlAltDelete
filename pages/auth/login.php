@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['school_id'] = $user['school_id'];
             $_SESSION['full_name'] = $user['full_name'];
             $_SESSION['role'] = $user['role'];
-            header("Location: /Project_CtrlAltDelete/pages/index.php");
+            header("Location: /Project-CtrlAltDelete/pages/index.php");
             exit;
         } else {
             $error = "Invalid credentials.";

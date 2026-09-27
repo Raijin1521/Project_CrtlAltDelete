@@ -1,7 +1,7 @@
 <?php
 include __DIR__ . '/../../includes/session_check.php';
 if ($_SESSION['role'] !== 'admin') {
-    header("Location: /Project_CtrlAltDelete/pages/index.php");
+    header("Location: /Project-CtrlAltDelete/pages/index.php");
     exit;
 }
 require_once __DIR__ . '/../../config/db_connect.php';
