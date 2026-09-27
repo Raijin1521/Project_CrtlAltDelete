@@ -4,12 +4,23 @@ require_once __DIR__ . '/../config/db_connect.php';
 
 $filter_type = $_GET['type'] ?? 'all';
 $search = "%".($_GET['q'] ?? '')."%";
+$availableFilter = "i.status IN ('active','pending')
+    AND NOT EXISTS (SELECT 1 FROM claims c WHERE c.item_id = i.item_id AND c.status = 'approved')
+    AND NOT EXISTS (
+        SELECT 1 FROM claims c
+        JOIN items found_item ON found_item.item_id = c.item_id
+        WHERE c.status = 'approved' AND c.claimant_id = i.reporter_id
+          AND i.item_type = 'lost' AND found_item.item_type = 'found'
+          AND LOWER(TRIM(found_item.title)) = LOWER(TRIM(i.title))
+          AND LOWER(TRIM(COALESCE(found_item.category, ''))) = LOWER(TRIM(COALESCE(i.category, '')))
+          AND LOWER(TRIM(COALESCE(found_item.color, ''))) = LOWER(TRIM(COALESCE(i.color, '')))
+    )";
 
 if ($filter_type === 'all') {
-    $stmt = $conn->prepare("SELECT * FROM items WHERE status IN ('active','pending') AND (title LIKE ? OR description LIKE ? OR category LIKE ?) ORDER BY date_reported DESC");
+    $stmt = $conn->prepare("SELECT i.* FROM items i WHERE $availableFilter AND (i.title LIKE ? OR i.description LIKE ? OR i.category LIKE ?) ORDER BY i.date_reported DESC");
     $stmt->execute([$search, $search, $search]);
 } else {
-    $stmt = $conn->prepare("SELECT * FROM items WHERE item_type=? AND status IN ('active','pending') AND (title LIKE ? OR description LIKE ? OR category LIKE ?) ORDER BY date_reported DESC");
+    $stmt = $conn->prepare("SELECT i.* FROM items i WHERE i.item_type=? AND $availableFilter AND (i.title LIKE ? OR i.description LIKE ? OR i.category LIKE ?) ORDER BY i.date_reported DESC");
     $stmt->execute([$filter_type, $search, $search, $search]);
 }
 $items = $stmt->fetchAll();

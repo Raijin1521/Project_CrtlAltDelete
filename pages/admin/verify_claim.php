@@ -25,6 +25,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $claim_id) {
             $stmt = $conn->prepare("UPDATE items SET status='claimed' WHERE item_id=?");
             $stmt->execute([$data['item_id']]);
 
+            // Close the claimant's matching lost report as the found item is released.
+            $stmt = $conn->prepare("UPDATE items
+                SET status='claimed'
+                WHERE item_type='lost' AND reporter_id=? AND status IN ('active','pending')
+                  AND LOWER(TRIM(title)) = LOWER(TRIM(?))
+                  AND LOWER(TRIM(COALESCE(category, ''))) = LOWER(TRIM(COALESCE(?, '')))
+                  AND LOWER(TRIM(COALESCE(color, ''))) = LOWER(TRIM(COALESCE(?, '')))");
+            $stmt->execute([
+                $data['claimant_id'],
+                $data['title'],
+                $data['category'],
+                $data['color'] ?? ''
+            ]);
+
             // Log handoff
             $stmt = $conn->prepare("
                 INSERT INTO handoff_log (item_id, given_to_name, given_to_school_id, released_by_admin_id, release_location, notes)

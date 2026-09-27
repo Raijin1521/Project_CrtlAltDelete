@@ -15,12 +15,40 @@ if (!$item) {
     exit;
 }
 
+$approved_claim_stmt = $conn->prepare("SELECT 1 FROM claims WHERE item_id = ? AND status = 'approved' LIMIT 1");
+$approved_claim_stmt->execute([$item_id]);
+$hasApprovedClaim = (bool)$approved_claim_stmt->fetchColumn();
+if (!$hasApprovedClaim && $item['item_type'] === 'lost') {
+    $matched_lost_claim = $conn->prepare("SELECT 1
+        FROM claims c
+        JOIN items found_item ON found_item.item_id = c.item_id
+        WHERE c.status = 'approved' AND c.claimant_id = ?
+          AND found_item.item_type = 'found'
+          AND LOWER(TRIM(found_item.title)) = LOWER(TRIM(?))
+          AND LOWER(TRIM(COALESCE(found_item.category, ''))) = LOWER(TRIM(COALESCE(?, '')))
+          AND LOWER(TRIM(COALESCE(found_item.color, ''))) = LOWER(TRIM(COALESCE(?, '')))
+        LIMIT 1");
+    $matched_lost_claim->execute([
+        $item['reporter_id'],
+        $item['title'],
+        $item['category'],
+        $item['color'] ?? ''
+    ]);
+    $hasApprovedClaim = (bool)$matched_lost_claim->fetchColumn();
+}
+if ($hasApprovedClaim) {
+    // Keep older/inconsistent records from appearing available after approval.
+    $item['status'] = 'claimed';
+}
+
 // Handle claim submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $item['item_type'] === 'found') {
     $proof_desc = trim($_POST['proof_description']);
     $proof_uid = trim($_POST['unique_identifier_proof']);
 
-    if (empty($proof_desc) || empty($proof_uid)) {
+    if ($hasApprovedClaim || !in_array($item['status'], ['active', 'pending'], true)) {
+        $error = "This item is no longer accepting claims.";
+    } elseif (empty($proof_desc) || empty($proof_uid)) {
         $error = "Please provide both description and unique identifier proof.";
     } elseif ($item['reporter_id'] == $_SESSION['user_id']) {
         $error = "You reported this item — you cannot claim it as lost property.";
@@ -80,7 +108,7 @@ if ($_SESSION['role'] === 'admin') {
         </div>
     </div>
 
-    <?php if ($item['item_type'] === 'found' && in_array($item['status'], ['active', 'pending'], true)): ?>
+    <?php if ($item['item_type'] === 'found' && in_array($item['status'], ['active', 'pending'], true) && !$hasApprovedClaim): ?>
     <hr style="margin:2rem 0;">
     <h3>📝 Claim This Item</h3>
     <div class="id-note">
@@ -102,7 +130,7 @@ if ($_SESSION['role'] === 'admin') {
     </form>
     <?php endif; ?>
 
-    <?php if ($item['item_type'] === 'found' && !in_array($item['status'], ['active', 'pending'], true)): ?>
+    <?php if ($item['item_type'] === 'found' && (!in_array($item['status'], ['active', 'pending'], true) || $hasApprovedClaim)): ?>
     <hr style="margin:2rem 0;">
     <p class="id-note">This item is no longer accepting claims.</p>
     <?php endif; ?>
