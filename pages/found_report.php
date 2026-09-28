@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="card">
     <h2>📌 Post a Found Item</h2>
     <div class="id-note">
-        Your School ID (<strong><?= e($_SESSION['school_id']) ?></strong>) is recorded as finder for chain-of-custody.
+        Your School ID is recorded as the finder for chain-of-custody.
     </div>
 
     <form method="POST">
@@ -73,11 +73,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label>Location Found</label>
         <input type="text" name="location_found" required placeholder="Building, Room, Area">
 
-        <label>
-            <input type="checkbox" name="is_high_value"> This is a high-value item (laptop, phone, watch, wallet with cash)
+        <label class="checkbox-label">
+            <input type="checkbox" name="is_high_value"> <span>This is a high-value item (laptop, phone, watch, wallet with cash)</span>
         </label>
-        <label>
-            <input type="checkbox" name="is_sensitive_doc"> This is a sensitive document (ID, license, passport)
+        <label class="checkbox-label">
+            <input type="checkbox" name="is_sensitive_doc"> <span>This is a sensitive document (ID, license, passport)</span>
         </label>
 
         <button type="submit">Submit Found Item</button>

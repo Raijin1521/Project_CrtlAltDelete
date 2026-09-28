@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="card">
     <h2>🔍 Report a Lost Item</h2>
     <div class="id-note">
-        Your School ID (<strong><?= e($_SESSION['school_id']) ?></strong>) is securely recorded for verification — never shared publicly.
+        Your School ID is securely recorded for verification and is never shared publicly.
     </div>
 
     <form method="POST">

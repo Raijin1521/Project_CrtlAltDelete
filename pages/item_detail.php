@@ -43,6 +43,10 @@ if ($hasApprovedClaim) {
 
 // Handle claim submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $item['item_type'] === 'found') {
+    if (($_SESSION['role'] ?? '') === 'admin') {
+        http_response_code(403);
+        exit('Administrators can view items but cannot submit claims.');
+    }
     $proof_desc = trim($_POST['proof_description']);
     $proof_uid = trim($_POST['unique_identifier_proof']);
 
@@ -108,7 +112,7 @@ if ($_SESSION['role'] === 'admin') {
         </div>
     </div>
 
-    <?php if ($item['item_type'] === 'found' && in_array($item['status'], ['active', 'pending'], true) && !$hasApprovedClaim): ?>
+    <?php if (($_SESSION['role'] ?? '') !== 'admin' && $item['item_type'] === 'found' && in_array($item['status'], ['active', 'pending'], true) && !$hasApprovedClaim): ?>
     <hr style="margin:2rem 0;">
     <h3>📝 Claim This Item</h3>
     <div class="id-note">
@@ -130,7 +134,7 @@ if ($_SESSION['role'] === 'admin') {
     </form>
     <?php endif; ?>
 
-    <?php if ($item['item_type'] === 'found' && (!in_array($item['status'], ['active', 'pending'], true) || $hasApprovedClaim)): ?>
+    <?php if (($_SESSION['role'] ?? '') !== 'admin' && $item['item_type'] === 'found' && (!in_array($item['status'], ['active', 'pending'], true) || $hasApprovedClaim)): ?>
     <hr style="margin:2rem 0;">
     <p class="id-note">This item is no longer accepting claims.</p>
     <?php endif; ?>

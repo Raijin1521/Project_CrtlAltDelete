@@ -2,6 +2,8 @@
 session_start();
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
 
 require_once __DIR__ . '/../config/db_connect.php';
 require_once __DIR__ . '/../includes/functions.php';
@@ -37,15 +39,25 @@ $claims = $conn->prepare("SELECT c.*, i.title FROM claims c JOIN items i ON c.it
 $claims->execute([$user_id]);
 $claims = $claims->fetchAll();
 
+$ownerFilter = $isAdmin ? '' : ' WHERE reporter_id = ?';
+$lostCountStmt = $conn->prepare("SELECT COUNT(*) FROM items" . $ownerFilter . ($isAdmin ? " WHERE item_type='lost'" : " AND item_type='lost'"));
+$foundCountStmt = $conn->prepare("SELECT COUNT(*) FROM items" . $ownerFilter . ($isAdmin ? " WHERE item_type='found'" : " AND item_type='found'"));
+$claimCountStmt = $isAdmin
+    ? $conn->prepare("SELECT COUNT(*) FROM claims")
+    : $conn->prepare("SELECT COUNT(*) FROM claims WHERE claimant_id = ?");
+
 if ($isAdmin) {
-    $lost_count = (int)$conn->query("SELECT COUNT(*) FROM items WHERE item_type='lost'")->fetchColumn();
-    $found_count = (int)$conn->query("SELECT COUNT(*) FROM items WHERE item_type='found'")->fetchColumn();
-    $claim_count = (int)$conn->query("SELECT COUNT(*) FROM claims")->fetchColumn();
+    $lostCountStmt->execute();
+    $foundCountStmt->execute();
+    $claimCountStmt->execute();
 } else {
-    $lost_count = count($lost_items);
-    $found_count = count($found_items);
-    $claim_count = count($claims);
+    $lostCountStmt->execute([$user_id]);
+    $foundCountStmt->execute([$user_id]);
+    $claimCountStmt->execute([$user_id]);
 }
+$lost_count = (int)$lostCountStmt->fetchColumn();
+$found_count = (int)$foundCountStmt->fetchColumn();
+$claim_count = (int)$claimCountStmt->fetchColumn();
 
 include __DIR__ . '/../includes/header.php';
 ?>
@@ -80,6 +92,22 @@ include __DIR__ . '/../includes/header.php';
     <ul>
         <?php foreach ($lost_items as $item): ?>
         <li><a href="/Project-CtrlAltDelete/pages/item_detail.php?id=<?= $item['item_id'] ?>"><?= e($item['title']) ?></a> — <em><?= e($item['display_status'] ?? $item['status']) ?></em></li>
+        <?php endforeach; ?>
+    </ul>
+    <?php endif; ?>
+    <?php if (!empty($found_items)): ?>
+    <h4>Your Found Items</h4>
+    <ul>
+        <?php foreach ($found_items as $item): ?>
+        <li><a href="/Project-CtrlAltDelete/pages/item_detail.php?id=<?= (int)$item['item_id'] ?>"><?= e($item['title']) ?></a> — <em><?= e($item['status']) ?></em></li>
+        <?php endforeach; ?>
+    </ul>
+    <?php endif; ?>
+    <?php if (!empty($claims)): ?>
+    <h4>Your Claims</h4>
+    <ul>
+        <?php foreach ($claims as $claim): ?>
+        <li><a href="/Project-CtrlAltDelete/pages/item_detail.php?id=<?= (int)$claim['item_id'] ?>"><?= e($claim['title']) ?></a> — claim <em><?= e(str_replace('_', ' ', $claim['status'])) ?></em></li>
         <?php endforeach; ?>
     </ul>
     <?php endif; ?>

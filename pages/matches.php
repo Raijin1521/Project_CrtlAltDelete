@@ -44,7 +44,7 @@ $matches = $stmt->fetchAll();
         <p><strong>Color:</strong> <?= e($match['color'] ?? '—') ?></p>
         <p><strong>Found at:</strong> <?= e($match['location_found'] ?? '—') ?></p>
         <a href="item_detail.php?id=<?= $match['found_item_id'] ?>" style="display:inline-block; margin-top:0.8rem; padding:0.5rem 1rem; background:#1e40af; color:white; border-radius:6px; text-decoration:none;">
-            View & Claim →
+            <?= ($_SESSION['role'] ?? '') === 'admin' ? 'View Details' : 'View & Claim' ?> →
         </a>
     </div>
     <?php endforeach; ?>

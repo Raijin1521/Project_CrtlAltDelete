@@ -38,6 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <?php include __DIR__ . '/../../includes/header.php'; ?>
 
+<div class="auth-layout">
 <div class="card" style="max-width: 480px; margin: 2rem auto;">
     <h2>Create Your CampusTrace Account</h2>
 
@@ -55,8 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label>Full Name</label>
         <input type="text" name="full_name" required placeholder="Your full name as in school records">
 
-        <label>School Email</label>
-        <input type="email" name="email" required placeholder="yourname@school.edu.ph">
+        <label>Email</label>
+        <input type="email" name="email" required placeholder="you@example.com">
 
         <label>Password</label>
         <input type="password" name="password" required>
@@ -65,6 +66,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
 
     <p style="margin-top:1.5rem;">Already have an account? <a href="login.php">Login here</a></p>
+</div>
+
+<details class="card how-it-works">
+    <summary>How it works &amp; limitations</summary>
+    <div class="how-it-works-content">
+        <p>Use your school account to help reunite people with lost belongings.</p>
+        <ol>
+            <li><strong>Report or browse.</strong> Post a lost or found item, or check the listings for a possible match.</li>
+            <li><strong>Submit a claim.</strong> If you recognize a found item, provide the requested details to support your claim.</li>
+            <li><strong>Wait for staff review.</strong> An administrator checks the claim and may contact you for more information.</li>
+            <li><strong>Arrange a handoff.</strong> If approved, follow the staff instructions and confirm your identity when collecting the item.</li>
+        </ol>
+        <h3>Limitations</h3>
+        <ul>
+            <li>Only items reported in CampusTrace can appear in its listings or matches.</li>
+            <li>A possible match does not confirm ownership; claims require staff review.</li>
+            <li>Approval and return depend on the information provided and staff verification, so a return is not guaranteed.</li>
+            <li>Review and handoff may take time; follow staff instructions for collection.</li>
+        </ul>
+    </div>
+</details>
 </div>
 
 <?php include __DIR__ . '/../../includes/footer.php'; ?>

@@ -4,6 +4,8 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 }
 require_once __DIR__ . '/../config/db_connect.php';
 require_once __DIR__ . '/functions.php';
+$currentPage = basename($_SERVER['SCRIPT_NAME'] ?? '');
+$isAuthPage = in_array($currentPage, ['login.php', 'register.php'], true);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,25 +23,27 @@ require_once __DIR__ . '/functions.php';
             }
         })();
     </script>
-    <link rel="stylesheet" href="/Project-CtrlAltDelete/assets/css/styles.css?v=20260927-7">
+    <link rel="stylesheet" href="/Project-CtrlAltDelete/assets/css/styles.css?v=20260928-7">
 </head>
 <body>
 <nav class="navbar">
     <div class="nav-brand">CampusTrace</div>
     <div class="nav-links">
-        <a href="/Project-CtrlAltDelete/pages/index.php">Dashboard</a>
-        <?php if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin'): ?>
-            <a href="/Project-CtrlAltDelete/pages/lost_report.php">Report Lost</a>
-            <a href="/Project-CtrlAltDelete/pages/found_report.php">Post Found</a>
+        <?php if (!$isAuthPage): ?>
+            <a href="/Project-CtrlAltDelete/pages/index.php">Dashboard</a>
+            <?php if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin'): ?>
+                <a href="/Project-CtrlAltDelete/pages/lost_report.php">Report Lost</a>
+                <a href="/Project-CtrlAltDelete/pages/found_report.php">Post Found</a>
+            <?php endif; ?>
+            <a href="/Project-CtrlAltDelete/pages/items_list.php">Browse Items</a>
+            <?php if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin'): ?>
+                <a href="/Project-CtrlAltDelete/pages/my_items.php">My Posts</a>
+            <?php endif; ?>
+            <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+                <a href="/Project-CtrlAltDelete/pages/admin/dashboard.php" class="admin-link">Admin Panel</a>
+            <?php endif; ?>
+            <a href="/Project-CtrlAltDelete/pages/auth/logout.php">Logout</a>
         <?php endif; ?>
-        <a href="/Project-CtrlAltDelete/pages/items_list.php">Browse Items</a>
-        <?php if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin'): ?>
-            <a href="/Project-CtrlAltDelete/pages/my_items.php">My Posts</a>
-        <?php endif; ?>
-        <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-            <a href="/Project-CtrlAltDelete/pages/admin/dashboard.php" class="admin-link">Admin Panel</a>
-        <?php endif; ?>
-        <a href="/Project-CtrlAltDelete/pages/auth/logout.php">Logout</a>
         <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch to dark mode">Dark mode</button>
     </div>
 </nav>

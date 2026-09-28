@@ -59,7 +59,7 @@ $items = $stmt->fetchAll();
             <?= date('M j, Y', strtotime($item['date_reported'])) ?>
         </p>
         <a href="item_detail.php?id=<?= $item['item_id'] ?>" style="display:inline-block; margin-top:0.5rem; color:#1e40af; font-weight:600;">
-            <?= $item['item_type'] === 'found' && in_array($item['status'], ['active', 'pending'], true) ? 'View & Claim' : 'View Details' ?> →
+            <?= ($_SESSION['role'] ?? '') !== 'admin' && $item['item_type'] === 'found' && in_array($item['status'], ['active', 'pending'], true) ? 'View & Claim' : 'View Details' ?> →
         </a>
     </div>
     <?php endforeach; ?>

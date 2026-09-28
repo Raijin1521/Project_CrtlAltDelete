@@ -7,16 +7,18 @@ $claim_id = intval($_GET['claim_id'] ?? $_POST['claim_id'] ?? 0);
 
 // Process action
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $claim_id) {
-    $action = $_POST['action'];
+    $action = $_POST['action'] ?? '';
     $notes = trim($_POST['admin_notes'] ?? '');
 
     // Load claim + item
-    $stmt = $conn->prepare("SELECT c.*, i.* FROM claims c JOIN items i ON c.item_id = i.item_id WHERE c.claim_id = ?");
+    $stmt = $conn->prepare("SELECT c.*, c.status AS claim_status, i.* FROM claims c JOIN items i ON c.item_id = i.item_id WHERE c.claim_id = ?");
     $stmt->execute([$claim_id]);
     $data = $stmt->fetch();
 
     if ($data) {
-        if ($action === 'approve') {
+        if (!in_array($data['claim_status'], ['submitted', 'under_review'], true)) {
+            $error = 'This claim has already been reviewed and cannot be changed again.';
+        } elseif ($action === 'approve') {
             // Update claim
             $stmt = $conn->prepare("UPDATE claims SET status='approved', reviewed_by=?, reviewed_at=NOW(), admin_notes=? WHERE claim_id=?");
             $stmt->execute([$_SESSION['user_id'], $notes, $claim_id]);
@@ -67,6 +69,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $claim_id) {
             $stmt->execute([$_SESSION['user_id'], $notes, $claim_id]);
             header("Location: disputes.php");
             exit;
+        } else {
+            $error = 'Invalid claim review action.';
         }
     }
 }
@@ -74,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $claim_id) {
 // Load claim for review
 $claim = null;
 if ($claim_id) {
-    $stmt = $conn->prepare("SELECT c.*, i.*, u_claim.full_name as claimant_name, u_rep.full_name as reporter_name 
+    $stmt = $conn->prepare("SELECT c.*, c.status AS claim_status, i.*, u_claim.full_name as claimant_name, u_rep.full_name as reporter_name 
         FROM claims c 
         JOIN items i ON c.item_id = i.item_id 
         JOIN users u_claim ON c.claimant_id = u_claim.user_id 
@@ -101,6 +105,7 @@ if (!$claim && !$success) {
 <?php elseif ($claim): ?>
 
 <div class="card">
+    <?php if (!empty($error)): ?><p style="color:red; margin-bottom:1rem;"><?= e($error) ?></p><?php endif; ?>
     <h3>Item: <?= e($claim['title']) ?></h3>
     <p><strong>Reported by:</strong> <?= e($claim['reporter_name']) ?> (<?= e($claim['reporter_school_id']) ?>)</p>
     <p><strong>Item Unique ID:</strong> <code style="background:#f1f5f9; padding:0.25rem 0.5rem; border-radius:4px;"><?= e($claim['unique_identifier']) ?></code></p>
@@ -121,6 +126,7 @@ if (!$claim && !$success) {
         <?= $match ? '✅ Unique Identifiers MATCH' : '⚠️ Identifiers DO NOT match — review manually' ?>
     </div>
 
+    <?php if (in_array($claim['claim_status'], ['submitted', 'under_review'], true)): ?>
     <form method="POST">
         <input type="hidden" name="claim_id" value="<?= $claim_id ?>">
 
@@ -133,6 +139,9 @@ if (!$claim && !$success) {
             <button type="submit" name="action" value="dispute" style="background:#d97706;">⚠️ Flag as Dispute</button>
         </div>
     </form>
+    <?php else: ?>
+    <p class="id-note">This claim has already been reviewed (<?= e(str_replace('_', ' ', $claim['claim_status'])) ?>).</p>
+    <?php endif; ?>
 </div>
 <?php endif; ?>
 
